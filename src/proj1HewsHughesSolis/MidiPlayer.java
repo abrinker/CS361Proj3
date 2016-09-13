@@ -1,10 +1,12 @@
 /*
- * File: MidiPlayer.java
+ * File: proj1HewsHughesSolis.MidiPlayer.java
  * Names: Dale Skrien
  * Class: CS361 
  * Project: 1
  * Date: September 6, 2016
  */
+
+package proj1HewsHughesSolis;
 
 import javax.sound.midi.*;
 
@@ -23,7 +25,7 @@ public class MidiPlayer
     private int beatsPerMinute;
 
     /**
-     * Creates a new MidiPlayer with the given parameters.
+     * Creates a new proj1HewsHughesSolis.MidiPlayer with the given parameters.
      * @param resolution     the number of ticks per beat
      * @param beatsPerMinute the number of beats per minute
      */

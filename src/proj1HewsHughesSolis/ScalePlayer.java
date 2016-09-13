@@ -66,11 +66,11 @@ public class ScalePlayer extends Application{
                 mp.clear();
                 for (int i = 0; i< notes.length; i++) {
                     mp.addNote(notes[i], 100, i, 1, 0, 0);  //notes going up scale
-                    mp.addNote(notes[i], 100, notes.length - i, 1, 0, 0); //notes going down scale
+                    mp.addNote(notes[i], 100, 2*notes.length - i, 1, 0, 0); //notes going down scale
                 }
 
                 mp.play();
-            };
+            }
         });
         stop.setOnAction(event -> mp.stop());
 

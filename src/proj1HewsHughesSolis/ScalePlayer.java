@@ -9,9 +9,11 @@
 package proj1HewsHughesSolis;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.util.Optional;
@@ -73,12 +75,18 @@ public class ScalePlayer extends Application{
         });
         stop.setOnAction(event -> mp.stop());
 
-        StackPane root = new StackPane();
-        root.getChildren().addAll(play, stop, menuBar);
+        // Create container for the buttons
+        HBox buttons = new HBox();
+        buttons.setPadding(new Insets(15, 12, 15, 12));
+        buttons.setSpacing(10);
 
-        //position relative to center
-        play.setTranslateX(-50);
-        stop.setTranslateX(50);
+        // Add the buttons to container and center the container
+        buttons.getChildren().addAll(play, stop);
+        buttons.setAlignment(Pos.CENTER);
+
+        StackPane root = new StackPane();
+        root.getChildren().addAll(buttons, menuBar);
+
         StackPane.setAlignment(menuBar, Pos.TOP_LEFT);
 
         Scene scene = new Scene(root, 300, 200);

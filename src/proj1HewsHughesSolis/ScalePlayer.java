@@ -53,20 +53,19 @@ public class ScalePlayer extends Application{
         stop.setStyle("-fx-base: #ff7f7f;");
 
         play.setOnAction(event -> {
-            TextInputDialog dialog = new TextInputDialog("0");
+            TextInputDialog dialog = new TextInputDialog("55");
             dialog.setTitle("Starting Note");
             dialog.setHeaderText("Please give me a starting note (0-115):");
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()) {
                 int startNote = Integer.valueOf(result.get());
-                int[] notes = {startNote, startNote + 2, startNote + 4, startNote + 5,
-                        startNote + 7, startNote + 9, startNote + 11, startNote + 12};
+
+                int[] notes = constructMajorScale(startNote);
 
                 mp.stop();
                 mp.clear();
                 for (int i = 0; i< notes.length; i++) {
-                    mp.addNote(notes[i], 100, i, 1, 0, 0);  //notes going up scale
-                    mp.addNote(notes[i], 100, 2*notes.length - i, 1, 0, 0); //notes going down scale
+                    mp.addNote(notes[i], 100, i, 1, 0, 0);
                 }
 
                 mp.play();
@@ -88,6 +87,28 @@ public class ScalePlayer extends Application{
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> System.exit(0));
+    }
+
+    /**
+     * Construct a major scale from the starting pitch
+     *
+     * @param startNote the note to begin the scale from.
+     *
+     * @return The sequence of note defining the scale, going up and down.
+     * */
+    private int[] constructMajorScale(int startNote){
+        // Construct the sequence of notes defining the major scale.
+        int[] scaleUp = {startNote, startNote + 2, startNote + 4, startNote + 5,
+                         startNote + 7, startNote + 9, startNote + 11, startNote + 12};
+
+        // Create the sequence going up and down.
+        int[] scaleUpDown = new int[16];
+        for(int i=0; i<scaleUp.length; i++){
+            scaleUpDown[i] = scaleUp[i]; // placement in up sequence
+            scaleUpDown[scaleUpDown.length - (i+1)] = scaleUp[i]; // reverse in down sequence
+        }
+        return scaleUpDown;
+
     }
 
     /**

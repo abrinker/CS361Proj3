@@ -1,9 +1,9 @@
 /*
- * File: proj1HewsHughesSolis.ScalePlayer.java
+ * File: proj2HewsHughesSolis.Main.java
  * Names: Phoebe Hughes, Josh Hews, Ana Sofia Solis Canales
  * Class: CS361
- * Project: 1
- * Due Date: September 15, 2016
+ * Project: 2
+ * Due Date: September 22, 2016
  */
 
 package proj2HewsHughesSolis;
@@ -43,9 +43,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         StackPane root = null;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
         try{
-            root = loader.load();
+            root = FXMLLoader.load(getClass().getResource("Main.fxml"));
         }catch(IOException e){
             e.printStackTrace();
             System.exit(1);

@@ -107,6 +107,8 @@ public class Main extends Application {
     /**
      * Initialize elements of window. First creates a MidiPlayer, and then sets
      * action event handlers for the two buttons and the exitMenuItem.
+     *
+     * This is automatically called when the fxml file is loaded
      * */
     public void initialize() {
         MidiPlayer mp = new MidiPlayer(1, 120);

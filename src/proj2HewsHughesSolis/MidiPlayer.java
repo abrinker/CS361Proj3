@@ -6,7 +6,7 @@
  * Date: September 6, 2016
  */
 
-package proj1HewsHughesSolis;
+package proj2HewsHughesSolis;
 
 import javax.sound.midi.*;
 
@@ -25,7 +25,7 @@ public class MidiPlayer
     private int beatsPerMinute;
 
     /**
-     * Creates a new proj1HewsHughesSolis.MidiPlayer with the given parameters.
+     * Creates a new proj2HewsHughesSolis.MidiPlayer with the given parameters.
      * @param resolution     the number of ticks per beat
      * @param beatsPerMinute the number of beats per minute
      */

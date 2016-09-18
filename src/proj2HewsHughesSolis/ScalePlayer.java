@@ -6,7 +6,7 @@
  * Due Date: September 15, 2016
  */
 
-package proj1HewsHughesSolis;
+package proj2HewsHughesSolis;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;

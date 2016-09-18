@@ -21,7 +21,7 @@ import java.util.Optional;
 /**
  * Creates application to play major scale given a starting note.
  */
-public class ScalePlayer extends Application{
+public class Main extends Application{
 
     /**
      * Sets up the main GUI to play a scale.

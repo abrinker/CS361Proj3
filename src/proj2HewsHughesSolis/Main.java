@@ -9,19 +9,30 @@
 package proj2HewsHughesSolis;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.Optional;
 
 /**
  * Creates application to play major scale given a starting note.
  */
-public class Main extends Application{
+public class Main extends Application {
+
+    @FXML
+    private Button playButton;
+    @FXML
+    private Button stopButton;
+    @FXML
+    private MenuItem exitMenuItem;
+
 
     /**
      * Sets up the main GUI to play a scale.
@@ -31,71 +42,47 @@ public class Main extends Application{
      */
     @Override
     public void start(Stage primaryStage) {
-        //exit option
-        MenuItem exit = new MenuItem("Exit");
-        exit.setOnAction(event -> System.exit(0));
+        StackPane root = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+        try{
+            root = loader.load();
+        }catch(IOException e){
+            e.printStackTrace();
+            System.exit(1);
+        }
 
-        //menubar
-        MenuBar menuBar = new MenuBar();
-        Menu menuFile = new Menu("File");
-        menuFile.getItems().add(exit);
-        menuBar.getMenus().add(menuFile);
-
-        //midiPlayer
-        MidiPlayer mp = new MidiPlayer(1, 120);
-
-        //buttons
-        Button play = new Button();
-        Button stop = new Button();
-
-        play.setText("Play Scale");
-        play.setStyle("-fx-base: #b6e7c9;");
-
-        stop.setText("Stop Playing");
-        stop.setStyle("-fx-base: #ff7f7f;");
-
-        play.setOnAction(event -> {
-            TextInputDialog dialog = new TextInputDialog("55");
-            dialog.setTitle("Starting Note");
-            dialog.setHeaderText("Please give me a starting note (0-115):");
-            Optional<String> result = dialog.showAndWait();
-            if (result.isPresent()) {
-                int startNote = Integer.valueOf(result.get());
-
-                int[] notes = constructMajorScale(startNote);
-
-                mp.stop();
-                mp.clear();
-                for (int i = 0; i< notes.length; i++) {
-                    mp.addNote(notes[i], 100, i, 1, 0, 0);
-                }
-
-                mp.play();
-            }
-        });
-        stop.setOnAction(event -> mp.stop());
-
-        // Create container for the buttons
-        HBox buttons = new HBox();
-        buttons.setPadding(new Insets(15, 12, 15, 12));
-        buttons.setSpacing(10);
-
-        // Add the buttons to container and center the container
-        buttons.getChildren().addAll(play, stop);
-        buttons.setAlignment(Pos.CENTER);
-
-        StackPane root = new StackPane();
-        root.getChildren().addAll(buttons, menuBar);
-
-        StackPane.setAlignment(menuBar, Pos.TOP_LEFT);
-
-        Scene scene = new Scene(root, 300, 200);
-
-        primaryStage.setTitle("Scale Player");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.setTitle("Test");
+        primaryStage.setScene(new Scene(root, 300, 200));
         primaryStage.setOnCloseRequest(event -> System.exit(0));
+        primaryStage.show();
     }
+
+    /**
+     * Play a major scale. First prompts the user to input a start note, after which the major scale starting at that
+     * note is played
+     *
+     * @param mp MidiPlayer to use to play the scale with
+     * */
+    private void playScale(MidiPlayer mp){
+        TextInputDialog dialog = new TextInputDialog("55");
+        dialog.setTitle("Starting Note");
+        dialog.setHeaderText("Please give me a starting note (0-115):");
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            int startNote = Integer.valueOf(result.get());
+
+            int[] notes = constructMajorScale(startNote);
+
+            mp.stop();
+            mp.clear();
+            for (int i = 0; i< notes.length; i++) {
+                mp.addNote(notes[i], 100, i, 1, 0, 0);
+            }
+
+            mp.play();
+        }
+    }
+
 
     /**
      * Construct a major scale from the starting pitch
@@ -116,7 +103,17 @@ public class Main extends Application{
             scaleUpDown[scaleUpDown.length - (i+1)] = scaleUp[i]; // reverse in down sequence
         }
         return scaleUpDown;
+    }
 
+    /**
+     * Initialize elements of window. First creates MidiPlayer, and then sets
+     * action event handlers for the two buttons and the exitMenuItem.
+     * */
+    public void initialize() {
+        MidiPlayer mp = new MidiPlayer(1, 120);
+        playButton.setOnAction(event -> playScale(mp));
+        exitMenuItem.setOnAction(event -> System.exit(0));
+        stopButton.setOnAction(event -> mp.stop());
     }
 
     /**

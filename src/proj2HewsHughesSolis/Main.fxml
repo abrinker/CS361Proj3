@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj2HewsHughesSolis.Main">
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="300.0" spacing="10.0" StackPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="15.0" left="12.0" right="12.0" top="15.0" />
+         </padding>
+         <children>
+            <Button fx:id="playButton" mnemonicParsing="false" text="Play Scale" />
+            <Button fx:id="stopButton" mnemonicParsing="false" text="Stop Playing" />
+         </children>
+      </HBox>
+      <MenuBar prefHeight="29.0" prefWidth="355.0" StackPane.alignment="TOP_LEFT">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="Exit" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</StackPane>

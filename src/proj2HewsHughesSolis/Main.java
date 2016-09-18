@@ -57,6 +57,19 @@ public class Main extends Application {
     }
 
     /**
+     * Initialize elements of window. First creates a MidiPlayer, and then sets
+     * action event handlers for the two buttons and the exitMenuItem.
+     *
+     * This is automatically called when the fxml file is loaded
+     * */
+    public void initialize() {
+        MidiPlayer mp = new MidiPlayer(1, 120);
+        playButton.setOnAction(event -> playScale(mp));
+        stopButton.setOnAction(event -> mp.stop());
+        exitMenuItem.setOnAction(event -> System.exit(0));
+    }
+
+    /**
      * Play a major scale. First prompts the user to input a start note, after which the major scale starting at that
      * note is played
      *
@@ -102,19 +115,6 @@ public class Main extends Application {
             scaleUpDown[scaleUpDown.length - (i+1)] = scaleUp[i]; // reverse in down sequence
         }
         return scaleUpDown;
-    }
-
-    /**
-     * Initialize elements of window. First creates a MidiPlayer, and then sets
-     * action event handlers for the two buttons and the exitMenuItem.
-     *
-     * This is automatically called when the fxml file is loaded
-     * */
-    public void initialize() {
-        MidiPlayer mp = new MidiPlayer(1, 120);
-        playButton.setOnAction(event -> playScale(mp));
-        stopButton.setOnAction(event -> mp.stop());
-        exitMenuItem.setOnAction(event -> System.exit(0));
     }
 
     /**

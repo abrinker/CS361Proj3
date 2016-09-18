@@ -106,14 +106,14 @@ public class Main extends Application {
     }
 
     /**
-     * Initialize elements of window. First creates MidiPlayer, and then sets
+     * Initialize elements of window. First creates a MidiPlayer, and then sets
      * action event handlers for the two buttons and the exitMenuItem.
      * */
     public void initialize() {
         MidiPlayer mp = new MidiPlayer(1, 120);
         playButton.setOnAction(event -> playScale(mp));
-        exitMenuItem.setOnAction(event -> System.exit(0));
         stopButton.setOnAction(event -> mp.stop());
+        exitMenuItem.setOnAction(event -> System.exit(0));
     }
 
     /**

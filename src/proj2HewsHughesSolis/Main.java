@@ -9,6 +9,7 @@
 package proj2HewsHughesSolis;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -32,6 +33,8 @@ public class Main extends Application {
     private Button stopButton;
     @FXML
     private MenuItem exitMenuItem;
+
+    private MidiPlayer midiPlayer;
 
 
     /**
@@ -63,19 +66,15 @@ public class Main extends Application {
      * This is automatically called when the fxml file is loaded
      * */
     public void initialize() {
-        MidiPlayer mp = new MidiPlayer(1, 120);
-        playButton.setOnAction(event -> playScale(mp));
-        stopButton.setOnAction(event -> mp.stop());
-        exitMenuItem.setOnAction(event -> System.exit(0));
+        this.midiPlayer = new MidiPlayer(1, 120);
     }
 
     /**
      * Play a major scale. First prompts the user to input a start note, after which the major scale starting at that
      * note is played
      *
-     * @param mp MidiPlayer to use to play the scale with
      * */
-    private void playScale(MidiPlayer mp){
+    private void playScale(){
         TextInputDialog dialog = new TextInputDialog("55");
         dialog.setTitle("Starting Note");
         dialog.setHeaderText("Please give me a starting note (0-115):");
@@ -85,16 +84,50 @@ public class Main extends Application {
 
             int[] notes = constructMajorScale(startNote);
 
-            mp.stop();
-            mp.clear();
+            this.midiPlayer.stop();
+            this.midiPlayer.clear();
             for (int i = 0; i< notes.length; i++) {
-                mp.addNote(notes[i], 100, i, 1, 0, 0);
+                midiPlayer.addNote(notes[i], 100, i, 1, 0, 0);
             }
 
-            mp.play();
+            this.midiPlayer.play();
         }
     }
 
+    @FXML
+    /**
+     * Safely exits the program without throwing an error
+     *
+     * @param event the event to trigger the exit.
+     */
+    protected void handleExit(ActionEvent event) {
+        System.exit(0);
+    }
+
+    @FXML
+    /**
+     * Stops the midi player
+this.     * For use in our stop button
+     * This code/docstring is "borrowed" by Alex Rinker from his group's proj 2
+     *
+     * @param event the event which causes the midiplayer to stop
+     */
+    protected void handleStopButtonAction(ActionEvent event) {
+        this.midiPlayer.stop();
+    }
+
+    @FXML
+    /**
+     * Creates a dialog box prompting the user for the starting note
+     * for use in the midi player.
+     * Then calls the playMidi method using that note (Integer)
+     * This code/docstring is "borrowed" by Alex Rinker from his group's proj 2
+     *
+     * @param event the event which should trigger the dialog box and midiplayer combo functionality.
+     */
+    protected void handlePlayButtonAction(ActionEvent event) {
+        playScale();
+    }
 
     /**
      * Construct a major scale from the starting pitch

@@ -26,15 +26,15 @@
             <Insets bottom="15.0" left="12.0" right="12.0" top="15.0" />
          </padding>
          <children>
-            <Button fx:id="playButton" mnemonicParsing="false" text="Play Scale" />
-            <Button fx:id="stopButton" mnemonicParsing="false" text="Stop Playing" />
+            <Button fx:id="playButton" mnemonicParsing="false" text="Play Scale" onAction="#handlePlayButtonAction"/>
+            <Button fx:id="stopButton" mnemonicParsing="false" text="Stop Playing" onAction="#handleStopButtonAction"/>
          </children>
       </HBox>
       <MenuBar prefHeight="29.0" prefWidth="355.0" StackPane.alignment="TOP_LEFT">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="Exit" />
+              <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="Exit" onAction="#handleExit"/>
             </items>
           </Menu>
         </menus>

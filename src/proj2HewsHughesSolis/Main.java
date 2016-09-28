@@ -27,13 +27,6 @@ import java.util.Optional;
  */
 public class Main extends Application {
 
-    @FXML
-    private Button playButton;
-    @FXML
-    private Button stopButton;
-    @FXML
-    private MenuItem exitMenuItem;
-
     private MidiPlayer midiPlayer;
 
 

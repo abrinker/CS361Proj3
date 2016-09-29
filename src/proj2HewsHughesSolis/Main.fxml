@@ -25,16 +25,6 @@
          <padding>
             <Insets bottom="15.0" left="12.0" right="12.0" top="15.0" />
          </padding>
-         <children>
-            <Button fx:id="playButton" mnemonicParsing="false"
-                                       text="Play Scale"
-                                       onAction="#handlePlayButtonAction">
-            </Button>
-            <Button fx:id="stopButton" mnemonicParsing="false"
-                                       text="Stop Playing"
-                                       onAction="#handleStopButtonAction">
-            </Button>
-         </children>
       </HBox>
       <MenuBar prefHeight="29.0" prefWidth="355.0" StackPane.alignment="TOP_LEFT">
         <menus>
@@ -46,6 +36,18 @@
                                              accelerator="Meta+Q">
               </MenuItem>
             </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Actions">
+            <MenuItem fx:id="exitMenuItem" mnemonicParsing="false"
+                                           text="Play"
+                                           onAction="#handlePlayMidi"
+                                           accelerator="Meta+P">
+            </MenuItem>
+            <MenuItem fx:id="exitMenuItem" mnemonicParsing="false"
+                                           text="Stop Playing"
+                                           onAction="#handleStopMidi"
+                                           accelerator="Meta+S">
+            </MenuItem>
           </Menu>
         </menus>
       </MenuBar>

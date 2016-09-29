@@ -105,7 +105,7 @@ this.     * For use in our stop button
      *
      * @param event the event which causes the midiplayer to stop
      */
-    protected void handleStopButtonAction(ActionEvent event) {
+    protected void handleStopMidi(ActionEvent event) {
         this.midiPlayer.stop();
     }
 
@@ -118,7 +118,7 @@ this.     * For use in our stop button
      *
      * @param event the event which should trigger the dialog box and midiplayer combo functionality.
      */
-    protected void handlePlayButtonAction(ActionEvent event) {
+    protected void handlePlayMidi(ActionEvent event) {
         playScale();
     }
 

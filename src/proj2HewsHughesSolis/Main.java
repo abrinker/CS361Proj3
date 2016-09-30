@@ -10,13 +10,14 @@ package proj2HewsHughesSolis;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.scene.paint.Color;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
+import javafx.scene.layout.Pane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ import java.util.Optional;
  */
 public class Main extends Application {
 
-    private MidiPlayer midiPlayer;
+    private MidiPlayer midiPlayer = new MidiPlayer(1, 120);
 
 
     /**
@@ -39,6 +40,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         StackPane root = null;
+
         try{
             root = FXMLLoader.load(getClass().getResource("Main.fxml"));
         }catch(IOException e){
@@ -46,20 +48,29 @@ public class Main extends Application {
             System.exit(1);
         }
 
-        primaryStage.setTitle("Test");
+        createCompositionSheet(root);
+
+        primaryStage.setTitle("Composition Sheet");
         primaryStage.setScene(new Scene(root, 300, 200));
         primaryStage.setOnCloseRequest(event -> System.exit(0));
         primaryStage.show();
     }
 
     /**
-     * Initialize elements of window. First creates a MidiPlayer, and then sets
-     * action event handlers for the two buttons and the exitMenuItem.
-     *
-     * This is automatically called when the fxml file is loaded
-     * */
-    public void initialize() {
-        this.midiPlayer = new MidiPlayer(1, 120);
+     * Generates the Composition page on the GUI
+     */
+    public void createCompositionSheet(StackPane root) {
+        Pane compositionSheet = new Pane();
+        compositionSheet.setPrefSize(2000, 1280);
+        compositionSheet.setTranslateY(30);
+        Rectangle staffLine;
+        for(int i=0; i<127; i++) {
+            staffLine = new Rectangle(2000.0, 1.0, Color.BLACK);
+            staffLine.setY(i*10);
+            compositionSheet.getChildren().add(staffLine);
+        }
+        root.getChildren().add(compositionSheet);
+        System.out.println(root.getChildren());
     }
 
     /**

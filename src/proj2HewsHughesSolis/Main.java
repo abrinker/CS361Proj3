@@ -19,6 +19,8 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -30,6 +32,7 @@ import java.util.Optional;
 public class Main extends Application {
 
     private MidiPlayer midiPlayer = new MidiPlayer(1, 120);
+    private Pane compositionSheet = new Pane();
 
 
     /**
@@ -49,7 +52,7 @@ public class Main extends Application {
             System.exit(1);
         }
 
-        createCompositionSheet(root);
+        setupCompositionSheet(root);
 
         primaryStage.setTitle("Composition Sheet");
         primaryStage.setScene(new Scene(root, 300, 200));
@@ -58,21 +61,49 @@ public class Main extends Application {
     }
 
     /**
-     * Generates the Composition page on the GUI
+     * Initializes the composition sheet by drawing it and setting up
+     * the proper mouseEvents that allow the user to interact with it
+     *
+     * @param root (the main StackPane for our scene)
      */
-    public void createCompositionSheet(StackPane root) {
-        Pane compositionSheet = new Pane();
+    private void setupCompositionSheet(StackPane root) {
+        createCompositionSheet(root);
+        this.compositionSheet.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                addNoteToComposition(mouseEvent.getX(), mouseEvent.getY());
+            }
+        });
+    }
+
+    /**
+     * Generates the Composition nodes by creating a scrollPane
+     * which holds a regular pane object (serves as the canvas)
+     * to which we add a bunch of rectangles which serve as the lines
+     *
+     * @param root (the root StackPane for our scene)
+     */
+    private void createCompositionSheet(StackPane root) {
         ScrollPane scrollPane = new ScrollPane();
-        compositionSheet.setPrefSize(2000, 1280);
+        this.compositionSheet.setPrefSize(2000, 1280);
         scrollPane.setTranslateY(30);
         Rectangle staffLine;
         for(int i=0; i<127; i++) {
             staffLine = new Rectangle(2000.0, 1.0, Color.BLACK);
             staffLine.setY(i*10);
-            compositionSheet.getChildren().add(staffLine);
+            this.compositionSheet.getChildren().add(staffLine);
         }
-        scrollPane.setContent(compositionSheet);
+        scrollPane.setContent(this.compositionSheet);
         root.getChildren().add(scrollPane);
+    }
+
+    /**
+     *
+     */
+    private void addNoteToComposition(double xPos, double yPos) {
+        Rectangle note = new Rectangle(20.0, 10.0, Color.BLUE);
+        note.setX(xPos); note.setY(yPos - (yPos % 10));
+        this.compositionSheet.getChildren().add(note);
     }
 
     /**

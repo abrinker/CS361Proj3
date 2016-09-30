@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -61,16 +62,17 @@ public class Main extends Application {
      */
     public void createCompositionSheet(StackPane root) {
         Pane compositionSheet = new Pane();
+        ScrollPane scrollPane = new ScrollPane();
         compositionSheet.setPrefSize(2000, 1280);
-        compositionSheet.setTranslateY(30);
+        scrollPane.setTranslateY(30);
         Rectangle staffLine;
         for(int i=0; i<127; i++) {
             staffLine = new Rectangle(2000.0, 1.0, Color.BLACK);
             staffLine.setY(i*10);
             compositionSheet.getChildren().add(staffLine);
         }
-        root.getChildren().add(compositionSheet);
-        System.out.println(root.getChildren());
+        scrollPane.setContent(compositionSheet);
+        root.getChildren().add(scrollPane);
     }
 
     /**

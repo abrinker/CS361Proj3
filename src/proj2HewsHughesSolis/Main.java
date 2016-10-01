@@ -32,8 +32,16 @@ import java.util.Optional;
 public class Main extends Application {
 
     private MidiPlayer midiPlayer = new MidiPlayer(1, 120);
-    private Pane compositionSheet = new Pane();
 
+    @FXML
+    private Pane compositionSheet;
+
+    /**
+     * Sets up the FXML elements that are dynamically built
+     */
+    public void initialize() {
+        setupCompositionSheet();
+    }
 
     /**
      * Sets up the main GUI to play a scale.
@@ -52,10 +60,8 @@ public class Main extends Application {
             System.exit(1);
         }
 
-        setupCompositionSheet(root);
-
         primaryStage.setTitle("Composition Sheet");
-        primaryStage.setScene(new Scene(root, 300, 200));
+        primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.setOnCloseRequest(event -> System.exit(0));
         primaryStage.show();
     }
@@ -66,8 +72,8 @@ public class Main extends Application {
      *
      * @param root (the main StackPane for our scene)
      */
-    private void setupCompositionSheet(StackPane root) {
-        createCompositionSheet(root);
+    private void setupCompositionSheet() {
+        createCompositionSheet();
         this.compositionSheet.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -83,25 +89,25 @@ public class Main extends Application {
      *
      * @param root (the root StackPane for our scene)
      */
-    private void createCompositionSheet(StackPane root) {
-        ScrollPane scrollPane = new ScrollPane();
-        this.compositionSheet.setPrefSize(2000, 1280);
-        scrollPane.setTranslateY(30);
+    private void createCompositionSheet() {
         Rectangle staffLine;
         for(int i=0; i<127; i++) {
             staffLine = new Rectangle(2000.0, 1.0, Color.BLACK);
             staffLine.setY(i*10);
             this.compositionSheet.getChildren().add(staffLine);
         }
-        scrollPane.setContent(this.compositionSheet);
-        root.getChildren().add(scrollPane);
     }
 
     /**
+     * Generates a rectangle which represents a note on the composition Pane
+     * The rectangle will be colored blue, adjusted to fit within the
+     * clicked lines, and be added to the composition pane.
      *
+     * @param xPos the input x position of the note
+     * @param yPos the input y position of the note (will be adjusted to look nice)
      */
     private void addNoteToComposition(double xPos, double yPos) {
-        Rectangle note = new Rectangle(20.0, 10.0, Color.BLUE);
+        Rectangle note = new Rectangle(25.0, 10.0, Color.BLUE);
         note.setX(xPos); note.setY(yPos - (yPos % 10));
         this.compositionSheet.getChildren().add(note);
     }

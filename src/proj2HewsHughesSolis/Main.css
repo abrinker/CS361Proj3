@@ -12,3 +12,10 @@
 #stopButton{
     -fx-base: #ff7f7f;
 }
+
+.note {
+  -fx-border-color: red;
+  -fx-border-width: 5;
+  -fx-border-style: solid;
+  -fx-opacity: 0.8;
+}

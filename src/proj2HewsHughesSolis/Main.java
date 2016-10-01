@@ -43,7 +43,8 @@ public class Main extends Application {
 
     /**
      * Sets up the main GUI to play a scale.
-     * Player contains a menu bar with exit option and two buttons: play and stop.
+     * Player contains a menu bar with exit option and two buttons:
+     * play and stop.
      *
      * @param primaryStage the stage to display the gui
      */
@@ -89,9 +90,15 @@ public class Main extends Application {
          for (Node note : this.compositionSheet.getChildren()) {
              if (note instanceof Rectangle) {
                  tempNote = (Rectangle) note;
-                 System.out.println(tempNote.getX());
-                 System.out.println(tempNote.getY() - (tempNote.getY() %10));
-                 System.out.println(tempNote.getWidth());
+                 this.midiPlayer.addNote(
+                     //pitch
+                     (int) (127.0 -(tempNote.getY() - (tempNote.getY()%10))/10),
+                     100,                        //volume
+                     (int) tempNote.getX(),      //startTick
+                     (int) tempNote.getWidth(),  //duration
+                     0,                          //channel
+                     0                           //trackIndex
+                 );
              }
          }
      }
@@ -102,11 +109,13 @@ public class Main extends Application {
      * clicked lines, and be added to the composition pane.
      *
      * @param xPos the input x position of the note
-     * @param yPos the input y position of the note (will be adjusted to look nice)
+     * @param yPos the input y position of the note
+     *        (will be adjusted to look nice)
      */
     private void addNoteToComposition(double xPos, double yPos) {
         if (yPos > 0 && yPos < 1270) {
-            Rectangle note = new Rectangle(25.0, 10.0, Color.BLUE);
+            Rectangle note = new Rectangle(100.0, 10.0, Color.BLUE);
+            note.getStyleClass().add("note");
             note.setX(xPos); note.setY(yPos - (yPos % 10));
             this.compositionSheet.getChildren().add(note);
         }
@@ -149,9 +158,12 @@ this.     * For use in our stop button
      * Then calls the playMidi method using that note (Integer)
      * This code/docstring is "borrowed" by Alex Rinker from his group's proj 2
      *
-     * @param event the event which should trigger the dialog box and midiplayer combo functionality.
+     * @param event the event which should trigger the dialog box and
+     * midiplayer combo functionality.
      */
     protected void handlePlayMidi(ActionEvent event) {
+        this.midiPlayer.stop();
+        this.midiPlayer.clear();
         buildSong();
         this.midiPlayer.play();
     }

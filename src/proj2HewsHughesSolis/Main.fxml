@@ -31,12 +31,12 @@
            </items>
          </Menu>
          <Menu mnemonicParsing="false" text="Actions">
-           <MenuItem fx:id="exitMenuItem" mnemonicParsing="false"
+           <MenuItem fx:id="playMenuItem" mnemonicParsing="false"
                      text="Play"
                      onAction="#handlePlayMidi"
                      accelerator="Meta+P">
            </MenuItem>
-           <MenuItem fx:id="exitMenuItem" mnemonicParsing="false"
+           <MenuItem fx:id="stopMenuItem" mnemonicParsing="false"
                      text="Stop Playing"
                      onAction="#handleStopMidi"
                      accelerator="Meta+S">
@@ -45,8 +45,13 @@
        </menus>
      </MenuBar>
      <ScrollPane>
+       <StackPane.margin>
+         <Insets top="30.0" />
+       </StackPane.margin>
        <content>
-         <Pane fx:id="compositionSheet" prefHeight="1280.0" prefWidth="2000.0">
+         <Pane fx:id="compositionSheet" prefHeight="1280.0"
+                                        prefWidth="2000.0"
+                                        onMouseClicked="#handleAddNote">
          </Pane>
        </content>
      </ScrollPane>

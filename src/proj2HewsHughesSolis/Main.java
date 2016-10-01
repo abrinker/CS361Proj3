@@ -14,6 +14,8 @@ import javafx.scene.paint.Color;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.shape.Line;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
@@ -27,7 +29,7 @@ import java.io.IOException;
  */
 public class Main extends Application {
 
-    private MidiPlayer midiPlayer = new MidiPlayer(1, 120);
+    private MidiPlayer midiPlayer = new MidiPlayer(100, 60);
 
     @FXML
     private Pane compositionSheet;
@@ -70,13 +72,29 @@ public class Main extends Application {
      * @param root (the root StackPane for our scene)
      */
     private void createCompositionSheet() {
-        Rectangle staffLine;
+        Line staffLine;
         for(int i=0; i<127; i++) {
-            staffLine = new Rectangle(2000.0, 1.0, Color.BLACK);
-            staffLine.setY(i*10);
+            staffLine = new Line(0,i*10,2000,i*10);
             this.compositionSheet.getChildren().add(staffLine);
         }
     }
+
+    /**
+     * Creates a composition using all of the rectangles in our
+     * compositionSheet, based on their X and Y positions
+     * (timing and pitch respectively)
+     */
+     private void buildSong() {
+         Rectangle tempNote;
+         for (Node note : this.compositionSheet.getChildren()) {
+             if (note instanceof Rectangle) {
+                 tempNote = (Rectangle) note;
+                 System.out.println(tempNote.getX());
+                 System.out.println(tempNote.getY() - (tempNote.getY() %10));
+                 System.out.println(tempNote.getWidth());
+             }
+         }
+     }
 
     /**
      * Generates a rectangle which represents a note on the composition Pane
@@ -134,7 +152,8 @@ this.     * For use in our stop button
      * @param event the event which should trigger the dialog box and midiplayer combo functionality.
      */
     protected void handlePlayMidi(ActionEvent event) {
-
+        buildSong();
+        this.midiPlayer.play();
     }
 
     /**

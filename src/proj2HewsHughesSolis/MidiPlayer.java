@@ -115,6 +115,7 @@ public class MidiPlayer
         } catch (InvalidMidiDataException e) {
             e.printStackTrace();
         }*/
+        sequencer.setTempoInBPM(beatsPerMinute);
         sequencer.start();
     }
 

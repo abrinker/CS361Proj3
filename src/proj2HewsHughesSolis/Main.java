@@ -211,7 +211,6 @@ this.     * For use in our stop button
         double stopTime = buildSong();
         moveTempoLine(stopTime);
         this.midiPlayer.play();
-        //removeTempoLine();
     }
 
     /**

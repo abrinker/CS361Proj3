@@ -22,6 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import javafx.animation.TranslateTransition;
+import javafx.animation.Interpolator;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,17 +33,16 @@ import java.io.IOException;
 public class Main extends Application {
 
     private MidiPlayer midiPlayer = new MidiPlayer(100, 60);
+    private Line tempoLine;
 
     @FXML
     private Pane compositionSheet;
-    private Line tempoLine;
 
     /**
      * Sets up the FXML elements that are dynamically built
      */
     public void initialize() {
         createCompositionSheet();
-        buildTempoLine();
     }
 
     /**
@@ -106,7 +106,6 @@ public class Main extends Application {
                      0,                          //channel
                      0                           //trackIndex
                  );
-                 System.out.println("Note X: " + tempNote.getX() + "Width: " + tempNote.getWidth());
                  if (stopTime < tempNote.getX()+tempNote.getWidth()) {
                      stopTime = tempNote.getX()+tempNote.getWidth();
                  }
@@ -116,7 +115,8 @@ public class Main extends Application {
      }
 
     /**
-     *
+     * Generates a new tempo line at the origin and adds it to the
+     * compositionSheet
      */
      private void buildTempoLine() {
          this.tempoLine = new Line(0,0,0,1280);
@@ -124,6 +124,9 @@ public class Main extends Application {
          this.compositionSheet.getChildren().add(this.tempoLine);
      }
 
+     /**
+      * if there is a tempoline in the compositionsheet, remove it.
+      */
      private void removeTempoLine() {
          if (this.compositionSheet.getChildren().contains(this.tempoLine)) {
              this.compositionSheet.getChildren().remove(this.tempoLine);
@@ -131,8 +134,12 @@ public class Main extends Application {
      }
 
     /**
-     * Draws a red line and moves it across the screen based on the
-     * current composition
+     * Moves the tempoline across the screen based on the input
+     * stop "time"/location
+     * Uses a TranslateTransition to do so.
+     *
+     * @param stopTime this is the stop location (e.g time) which is the
+     * location of the right edge of the final note to be played
      */
      private void moveTempoLine(double stopTime) {
          removeTempoLine();
@@ -140,9 +147,8 @@ public class Main extends Application {
          TranslateTransition tt = new TranslateTransition(
              new Duration(stopTime*10), this.tempoLine
          );
-         tt.setFromX(0.0);
          tt.setToX(stopTime);
-         tt.setByX(1.0);
+         tt.setInterpolator(Interpolator.LINEAR);
          tt.play();
      }
 
@@ -167,6 +173,9 @@ public class Main extends Application {
     @FXML
     /**
      * Adds a note to the composition panel
+     *
+     * @param mouseEvent this is the mouseEvent that is mapped
+     * to this functionality (e.g. left click event)
      */
     protected void handleAddNote(MouseEvent mouseEvent) {
         addNoteToComposition(mouseEvent.getX(), mouseEvent.getY());
@@ -185,7 +194,6 @@ public class Main extends Application {
     @FXML
     /**
      * Stops the midi player
-this.     * For use in our stop button
      * This code/docstring is "borrowed" by Alex Rinker from his group's proj 2
      *
      * @param event the event which causes the midiplayer to stop
@@ -209,8 +217,8 @@ this.     * For use in our stop button
         this.midiPlayer.stop();
         this.midiPlayer.clear();
         double stopTime = buildSong();
-        moveTempoLine(stopTime);
         this.midiPlayer.play();
+        moveTempoLine(stopTime);
     }
 
     /**

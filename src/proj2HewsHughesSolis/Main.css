@@ -6,13 +6,6 @@
  * Due Date: September 22, 2016
  */
 
-#playButton{
-    -fx-base: #b6e7c9;
-}
-#stopButton{
-    -fx-base: #ff7f7f;
-}
-
 .note {
   -fx-border-color: black;
   -fx-border-width: 5;

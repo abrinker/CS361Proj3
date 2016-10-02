@@ -33,10 +33,12 @@ import java.io.IOException;
 public class Main extends Application {
 
     private MidiPlayer midiPlayer = new MidiPlayer(100, 60);
-    private Line tempoLine;
 
     @FXML
     private Pane compositionSheet;
+
+    @FXML
+    private Line tempoLine;
 
     /**
      * Sets up the FXML elements that are dynamically built
@@ -114,23 +116,11 @@ public class Main extends Application {
          return stopTime;
      }
 
-    /**
-     * Generates a new tempo line at the origin and adds it to the
-     * compositionSheet
-     */
-     private void buildTempoLine() {
-         this.tempoLine = new Line(0,0,0,1280);
-         this.tempoLine.getStyleClass().add("tempo-line");
-         this.compositionSheet.getChildren().add(this.tempoLine);
-     }
-
      /**
       * if there is a tempoline in the compositionsheet, remove it.
       */
-     private void removeTempoLine() {
-         if (this.compositionSheet.getChildren().contains(this.tempoLine)) {
-             this.compositionSheet.getChildren().remove(this.tempoLine);
-         }
+     private void hideTempoLine() {
+         this.tempoLine.setVisible(false);
      }
 
     /**
@@ -142,8 +132,9 @@ public class Main extends Application {
      * location of the right edge of the final note to be played
      */
      private void moveTempoLine(double stopTime) {
-         removeTempoLine();
-         buildTempoLine();
+         hideTempoLine();
+         this.tempoLine.setTranslateX(0);
+         this.tempoLine.setVisible(true);
          TranslateTransition tt = new TranslateTransition(
              new Duration(stopTime*10), this.tempoLine
          );
@@ -200,7 +191,7 @@ public class Main extends Application {
      */
     protected void handleStopMidi(ActionEvent event) {
         this.midiPlayer.stop();
-        removeTempoLine();
+        hideTempoLine();
     }
 
     @FXML

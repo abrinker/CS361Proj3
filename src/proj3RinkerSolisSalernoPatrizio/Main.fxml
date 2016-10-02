@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
--File: proj2HewsHughesSolis.Main.java
--Names: Phoebe Hughes, Josh Hews, Ana Sofia Solis Canales
+-File: proj3RinkerSolisSalernoPatrizio.Main.java
+-Names: Alex Rinker, Ana Sofia Solis Canales, Ryan Salerno, Larry Patrizio
 -Class: CS361
--Project: 2
--Due Date: September 22, 2016
+-Project: 3
+-Due Date: October 3rd 2016
 -->
 
 <?import javafx.scene.control.Menu?>
@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.BorderPane?>
 
 <BorderPane prefHeight="300.0" prefWidth="400.0" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/8.0.76-ea"
-           xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj2HewsHughesSolis.Main">
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj3RinkerSolisSalernoPatrizio.Main">
    <top>
      <MenuBar prefHeight="30.0" prefWidth="500.0" BorderPane.alignment="TOP_LEFT">
        <menus>

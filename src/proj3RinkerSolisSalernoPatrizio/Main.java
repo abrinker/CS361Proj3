@@ -1,12 +1,12 @@
 /*
- * File: proj2HewsHughesSolis.Main.java
- * Names: Phoebe Hughes, Josh Hews, Ana Sofia Solis Canales
+ * File: project3RinkerSolisSalernoPatrizio.Main.java
+ * Names: Alex Rinker, Ana Sofia Solis Canales, Ryan Salerno, Larry Patrizio
  * Class: CS361
- * Project: 2
- * Due Date: September 22, 2016
+ * Project: 3
+ * Due Date: October 3rd 2016
  */
 
-package proj2HewsHughesSolis;
+package proj3RinkerSolisSalernoPatrizio;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -45,13 +45,14 @@ public class Main extends Application {
         this.tempoLine = new TempoLine(this.fxTempoLine);
     }
 
-    @FXML
+
     /**
      * Adds a note to the composition panel
      *
      * @param mouseEvent this is the mouseEvent that is mapped
      * to this functionality (e.g. left click event)
      */
+    @FXML
     protected void handleAddNote(MouseEvent mouseEvent) {
         this.compositionSheet.addNoteToComposition(
             mouseEvent.getX(), mouseEvent.getY()
@@ -67,30 +68,30 @@ public class Main extends Application {
         this.midiPlayer.play();
     }
 
-    @FXML
+
     /**
      * Stops the midi player, the animation, and hides the tempo bar
      * This code/docstring is "borrowed" by Alex Rinker from his group's proj 2
      *
      * @param event the event which causes the midiplayer to stop
      */
+    @FXML
     protected void handleStopMusic(ActionEvent event) {
         this.midiPlayer.stop();
         this.tempoLine.stopAnimation();
         this.tempoLine.hideTempoLine();
     }
 
-    @FXML
+
     /**
      * Safely exits the program without throwing an error
      *
      * @param event the event to trigger the exit.
      */
+    @FXML
     protected void handleExit(ActionEvent event) {
         System.exit(0);
     }
-
-    @FXML
     /**
      * Creates a dialog box prompting the user for the starting note
      * for use in the midi player.
@@ -100,6 +101,7 @@ public class Main extends Application {
      * @param event the event which should trigger the dialog box and
      * midiplayer combo functionality.
      */
+    @FXML
     protected void handlePlayMidi(ActionEvent event) {
         this.midiPlayer.stop();
         this.midiPlayer.clear();

@@ -1,4 +1,4 @@
-/**
+/*
  * File: CompositionSheet.java
  * Names: Alex Rinker, Ana Sofia Solis Canales, Ryan Salerno, Larry Patrizio
  * Class: CS361
@@ -10,13 +10,13 @@
  * to create a music composition sheet
  */
 
-package proj2HewsHughesSolis;
-import javafx.event.ActionEvent;
+package proj3RinkerSolisSalernoPatrizio;
+
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import javafx.animation.TranslateTransition;
 import javafx.animation.Interpolator;
-import javafx.event.EventHandler;
+
 
 public class TempoLine {
     private Line tempoLine;
@@ -33,12 +33,7 @@ public class TempoLine {
         this.tempoLine = tempoLine;
         this.tempoAnimation.setNode(this.tempoLine);
         this.tempoAnimation.setInterpolator(Interpolator.LINEAR); // Don't ease
-        this.tempoAnimation.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                hideTempoLine();
-            }
-        });
+        this.tempoAnimation.setOnFinished(event -> hideTempoLine());
     }
 
     /**

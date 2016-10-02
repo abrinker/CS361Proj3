@@ -1,16 +1,14 @@
-/**
- * File: CompositionSheet.java
+/*
+ * File: project3RinkerSolisSalernoPatrizio.CompositionSheet.java
  * Names: Alex Rinker, Ana Sofia Solis Canales, Ryan Salerno, Larry Patrizio
  * Class: CS361
  * Project: 3
  * Due Date: October 3rd 2016
- *
- * Created by Alex on 10/2/16.
  * Takes in a Pane which it then adds lines to in order
  * to create a music composition sheet
  */
 
-package proj2HewsHughesSolis;
+package proj3RinkerSolisSalernoPatrizio;
 
 import javafx.scene.shape.Line;
 import javafx.scene.layout.Pane;

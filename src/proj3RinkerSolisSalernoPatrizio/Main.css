@@ -1,0 +1,17 @@
+/*
+ * File: project3RinkerSolisSalernoPatrizio.Main.css
+ * Names: Alex Rinker, Ana Sofia Solis Canales, Ryan Salerno, Larry Patrizio
+ * Class: CS361
+ * Project: 3
+ * Due Date: October 3rd 2016
+ */
+
+.note {
+  -fx-stroke: black;
+  -fx-fill: blue;
+  -fx-opacity: 0.7;
+}
+
+.tempo-line {
+  -fx-stroke: red;
+}

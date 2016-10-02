@@ -17,7 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.shape.Line;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
@@ -57,7 +57,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        StackPane root = null;
+        BorderPane root = null;
 
         try{
             root = FXMLLoader.load(getClass().getResource("Main.fxml"));
@@ -77,7 +77,7 @@ public class Main extends Application {
      * which holds a regular pane object (serves as the canvas)
      * to which we add a bunch of rectangles which serve as the lines
      *
-     * @param root (the root StackPane for our scene)
+     * @param root (the root BorderPane for our scene)
      */
     private void createCompositionSheet() {
         Line staffLine;

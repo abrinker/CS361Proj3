@@ -14,7 +14,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.BorderPane?>
 
 <BorderPane prefHeight="300.0" prefWidth="400.0" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/8.0.76-ea"
@@ -39,7 +38,7 @@
            </MenuItem>
            <MenuItem fx:id="stopMenuItem" mnemonicParsing="false"
                      text="Stop Playing"
-                     onAction="#handleStopMidi"
+                     onAction="#handleStopMusic"
                      accelerator="Meta+S">
            </MenuItem>
          </Menu>

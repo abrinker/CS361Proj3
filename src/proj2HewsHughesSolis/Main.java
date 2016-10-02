@@ -10,7 +10,6 @@ package proj2HewsHughesSolis;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.scene.paint.Color;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -78,8 +77,6 @@ public class Main extends Application {
      * Generates the Composition nodes by creating a scrollPane
      * which holds a regular pane object (serves as the canvas)
      * to which we add a bunch of rectangles which serve as the lines
-     *
-     * @param root (the root BorderPane for our scene)
      */
     private void createCompositionSheet() {
         Line staffLine;
@@ -94,7 +91,8 @@ public class Main extends Application {
      * compositionSheet, based on their X and Y positions
      * (timing and pitch respectively)
      *
-     * returns the time that the song ends at
+     * Also Keeps track of the last note and when it ends
+     * and returns it for use in the animation
      */
      private double buildSong() {
          Rectangle tempNote;
@@ -111,12 +109,20 @@ public class Main extends Application {
                      0,                          //channel
                      0                           //trackIndex
                  );
+                 //Update Stoptime if the note is the last one so far
                  if (stopTime < tempNote.getX()+tempNote.getWidth()) {
                      stopTime = tempNote.getX()+tempNote.getWidth();
                  }
              }
          }
          return stopTime;
+     }
+
+     /**
+      * if there is a tempoline in the compositionsheet, remove it.
+      */
+     private void hideTempoLine() {
+         this.tempoLine.setVisible(false);
      }
 
      /**
@@ -128,20 +134,13 @@ public class Main extends Application {
       */
      private void setupTempoAnimation() {
          this.tempoAnimation.setNode(this.tempoLine);
-         this.tempoAnimation.setInterpolator(Interpolator.LINEAR);
+         this.tempoAnimation.setInterpolator(Interpolator.LINEAR); // Don't ease
          this.tempoAnimation.setOnFinished(new EventHandler<ActionEvent>() {
              @Override
              public void handle(ActionEvent event) {
                  hideTempoLine();
              }
          });
-     }
-
-     /**
-      * if there is a tempoline in the compositionsheet, remove it.
-      */
-     private void hideTempoLine() {
-         this.tempoLine.setVisible(false);
      }
 
     /**
@@ -152,7 +151,7 @@ public class Main extends Application {
      * @param stopTime this is the stop location (e.g time) which is the
      * location of the right edge of the final note to be played
      */
-     private void moveTempoLine(double stopTime) {
+     private void updateTempoLine(double stopTime) {
          this.tempoAnimation.stop();
          this.tempoLine.setTranslateX(0);
          this.tempoAnimation.setDuration(new Duration(stopTime*10));
@@ -190,6 +189,15 @@ public class Main extends Application {
         addNoteToComposition(mouseEvent.getX(), mouseEvent.getY());
     }
 
+    /**
+     * starts the midiplayer and the animation so they are
+     * very close in time with each other (milliseconds)
+     */
+    protected void playMusicAndAnimation() {
+        this.tempoAnimation.play();
+        this.midiPlayer.play();
+    }
+
     @FXML
     /**
      * Safely exits the program without throwing an error
@@ -202,13 +210,14 @@ public class Main extends Application {
 
     @FXML
     /**
-     * Stops the midi player
+     * Stops the midi player, the animation, and hides the tempo bar
      * This code/docstring is "borrowed" by Alex Rinker from his group's proj 2
      *
      * @param event the event which causes the midiplayer to stop
      */
-    protected void handleStopMidi(ActionEvent event) {
+    protected void handleStopMusic(ActionEvent event) {
         this.midiPlayer.stop();
+        this.tempoAnimation.stop();
         hideTempoLine();
     }
 
@@ -226,8 +235,8 @@ public class Main extends Application {
         this.midiPlayer.stop();
         this.midiPlayer.clear();
         double stopTime = buildSong();
-        this.midiPlayer.play();
-        moveTempoLine(stopTime);
+        updateTempoLine(stopTime);
+        playMusicAndAnimation();
     }
 
     /**

@@ -45,30 +45,6 @@ public class Main extends Application {
         this.tempoLine = new TempoLine(this.fxTempoLine);
     }
 
-    /**
-     * Sets up the main GUI to play a scale.
-     * Player contains a menu bar with exit option and two buttons:
-     * play and stop.
-     *
-     * @param primaryStage the stage to display the gui
-     */
-    @Override
-    public void start(Stage primaryStage) {
-        BorderPane root = null;
-
-        try{
-            root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-        }catch(IOException e){
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        primaryStage.setTitle("Composition Sheet");
-        primaryStage.setScene(new Scene(root, 800, 500));
-        primaryStage.setOnCloseRequest(event -> System.exit(0));
-        primaryStage.show();
-    }
-
     @FXML
     /**
      * Adds a note to the composition panel
@@ -93,16 +69,6 @@ public class Main extends Application {
 
     @FXML
     /**
-     * Safely exits the program without throwing an error
-     *
-     * @param event the event to trigger the exit.
-     */
-    protected void handleExit(ActionEvent event) {
-        System.exit(0);
-    }
-
-    @FXML
-    /**
      * Stops the midi player, the animation, and hides the tempo bar
      * This code/docstring is "borrowed" by Alex Rinker from his group's proj 2
      *
@@ -112,6 +78,16 @@ public class Main extends Application {
         this.midiPlayer.stop();
         this.tempoLine.stopAnimation();
         this.tempoLine.hideTempoLine();
+    }
+
+    @FXML
+    /**
+     * Safely exits the program without throwing an error
+     *
+     * @param event the event to trigger the exit.
+     */
+    protected void handleExit(ActionEvent event) {
+        System.exit(0);
     }
 
     @FXML
@@ -130,6 +106,30 @@ public class Main extends Application {
         double stopTime = compositionSheet.buildSong(this.midiPlayer);
         this.tempoLine.updateTempoLine(stopTime);
         playMusicAndAnimation();
+    }
+
+    /**
+     * Sets up the main GUI to play a scale.
+     * Player contains a menu bar with exit option and two buttons:
+     * play and stop.
+     *
+     * @param primaryStage the stage to display the gui
+     */
+    @Override
+    public void start(Stage primaryStage) {
+        BorderPane root = null;
+
+        try{
+            root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+        }catch(IOException e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        primaryStage.setTitle("Composition Sheet");
+        primaryStage.setScene(new Scene(root, 800, 500));
+        primaryStage.setOnCloseRequest(event -> System.exit(0));
+        primaryStage.show();
     }
 
     /**

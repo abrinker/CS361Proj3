@@ -4,8 +4,6 @@
  * Class: CS361
  * Project: 3
  * Due Date: October 3rd 2016
- *
- * Created by Alex on 10/2/16.
  * Takes in a Pane which it then adds lines to in order
  * to create a music composition sheet
  */

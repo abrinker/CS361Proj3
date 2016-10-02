@@ -4,6 +4,10 @@
  * Class: CS361
  * Project: 3
  * Due Date: October 3rd 2016
+ * Controller for music composition project.
+ * It has access to all the other classes:
+ * Main.css, Main.fxml, CompositionSheet.java,
+ * TempoLine.java, and MidiPlayer.java
  */
 
 package proj3RinkerSolisSalernoPatrizio;
@@ -21,9 +25,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * Creates application to play major scale given a starting note.
- */
 public class Main extends Application {
 
     private MidiPlayer midiPlayer = new MidiPlayer(100, 60);

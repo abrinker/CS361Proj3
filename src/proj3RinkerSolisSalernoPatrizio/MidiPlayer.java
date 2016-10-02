@@ -2,7 +2,7 @@
  * File: project3RinkerSolisSalernoPatrizio.MidiPlayer.java
  * Names: Dale Skrien
  * Class: CS361 
- * Project: 1
+ * Project: 3
  * Date: September 6, 2016
  */
 

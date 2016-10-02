@@ -27,22 +27,52 @@ import javafx.util.Duration;
 import javafx.animation.TranslateTransition;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
+import java.util.ArrayList;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class CompositionSheet {
+    private Pane composition;
+    private ArrayList<Rectangle> notes = new ArrayList<Rectangle>();
+
+    /**
+     * Constructor. Takes in a pane node
+     */
+    public CompositionSheet(Pane composition) {
+        this.composition = composition;
+        createCompositionSheet();
+    }
 
     /**
      * Generates the Composition nodes by creating a scrollPane
      * which holds a regular pane object (serves as the canvas)
      * to which we add a bunch of rectangles which serve as the lines
      */
-    public static void createCompositionSheet(Pane composition) {
+    public void createCompositionSheet() {
         Line staffLine;
         for(int i=0; i<127; i++) {
             staffLine = new Line(0,i*10,2000,i*10);
-            composition.getChildren().add(staffLine);
+            this.composition.getChildren().add(staffLine);
+        }
+    }
+
+    /**
+     * Generates a rectangle which represents a note on the composition Pane
+     * The rectangle will be colored blue, adjusted to fit within the
+     * clicked lines, and be added to the composition pane.
+     *
+     * @param xPos the input x position of the note
+     * @param yPos the input y position of the note
+     *        (will be adjusted to look nice)
+     */
+    public void addNoteToComposition(double xPos, double yPos) {
+        if (yPos > 0 && yPos < 1270) {
+            Rectangle note = new Rectangle(100.0, 10.0);
+            note.getStyleClass().add("note");
+            note.setX(xPos); note.setY(yPos - (yPos % 10));
+            this.composition.getChildren().add(note);
+            this.notes.add(note);
         }
     }
 
@@ -54,25 +84,21 @@ public class CompositionSheet {
      * Also Keeps track of the last note and when it ends
      * and returns it for use in the animation
      */
-     public static double buildSong(Pane composition, MidiPlayer midiPlayer) {
-         Rectangle tempNote;
+     public double buildSong( MidiPlayer midiPlayer) {
          double stopTime = 0.0;
-         for (Node note : composition.getChildren()) {
-             if (note instanceof Rectangle) {
-                 tempNote = (Rectangle) note;
-                 midiPlayer.addNote(
-                     //pitch
-                     (int) (127.0 -(tempNote.getY() - (tempNote.getY()%10))/10),
-                     100,                        //volume
-                     (int) tempNote.getX(),      //startTick
-                     (int) tempNote.getWidth(),  //duration
-                     0,                          //channel
-                     0                           //trackIndex
-                 );
-                 //Update Stoptime if the note is the last one so far
-                 if (stopTime < tempNote.getX()+tempNote.getWidth()) {
-                     stopTime = tempNote.getX()+tempNote.getWidth();
-                 }
+         for (Rectangle note : this.notes) {
+             midiPlayer.addNote(
+                 //pitch
+                 (int) (127.0 -(note.getY() - (note.getY()%10))/10),
+                 100,                    //volume
+                 (int) note.getX(),      //startTick
+                 (int) note.getWidth(),  //duration
+                 0,                      //channel
+                 0                       //trackIndex
+             );
+             //Update Stoptime if the note is the last one so far
+             if (stopTime < note.getX()+note.getWidth()) {
+                 stopTime = note.getX()+note.getWidth();
              }
          }
          return stopTime;

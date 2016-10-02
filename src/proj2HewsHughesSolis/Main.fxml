@@ -48,16 +48,16 @@
    <center>
      <ScrollPane>
        <content>
-         <Pane fx:id="compositionSheet" prefHeight="1280.0"
-                                        prefWidth="2000.0"
-                                        onMouseClicked="#handleAddNote">
+         <Pane fx:id="fxCompositionSheet" prefHeight="1280.0"
+                                          prefWidth="2000.0"
+                                          onMouseClicked="#handleAddNote">
            <children>
-             <Line fx:id="tempoLine" styleClass="tempo-line"
-                                     startX="0.0"
-                                     startY="0.0"
-                                     endX="0.0"
-                                     endY="1280.0"
-                                     visible="false"/>
+             <Line fx:id="fxTempoLine" styleClass="tempo-line"
+                                       startX="0.0"
+                                       startY="0.0"
+                                       endX="0.0"
+                                       endY="1280.0"
+                                       visible="false"/>
            </children>
          </Pane>
        </content>

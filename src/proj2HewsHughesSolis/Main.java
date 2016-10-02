@@ -35,18 +35,20 @@ public class Main extends Application {
     private MidiPlayer midiPlayer = new MidiPlayer(100, 60);
 
     @FXML
-    private Pane compositionSheet;
+    private Pane fxCompositionSheet;
+    private CompositionSheet compositionSheet;
 
     @FXML
-    private Line tempoLine;
-    private TranslateTransition tempoAnimation = new TranslateTransition();
+    private Line fxTempoLine;
+    private TempoLine tempoLine;
 
     /**
-     * Sets up the FXML elements that are dynamically built
+     * Seeds our CompositionSheet and TempoLine objects with the
+     * fields from the FXML file after the FXML has been initialized
      */
     public void initialize() {
-        CompositionSheet.createCompositionSheet(this.compositionSheet);
-        setupTempoAnimation();
+        this.compositionSheet = new CompositionSheet(this.fxCompositionSheet);
+        this.tempoLine = new TempoLine(this.fxTempoLine);
     }
 
     /**
@@ -73,66 +75,6 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-     /**
-      * if there is a tempoline in the compositionsheet, remove it.
-      */
-     private void hideTempoLine() {
-         this.tempoLine.setVisible(false);
-     }
-
-     /**
-      * Initializes the tempoAnimation object with the default
-      * values it needs
-      * Provides the animation with the tempoLine which it moves
-      * makes sure the animation is linear
-      * and sets our onFinished event
-      */
-     private void setupTempoAnimation() {
-         this.tempoAnimation.setNode(this.tempoLine);
-         this.tempoAnimation.setInterpolator(Interpolator.LINEAR); // Don't ease
-         this.tempoAnimation.setOnFinished(new EventHandler<ActionEvent>() {
-             @Override
-             public void handle(ActionEvent event) {
-                 hideTempoLine();
-             }
-         });
-     }
-
-    /**
-     * Moves the tempoline across the screen based on the input
-     * stop "time"/location
-     * Uses a TranslateTransition to do so.
-     *
-     * @param stopTime this is the stop location (e.g time) which is the
-     * location of the right edge of the final note to be played
-     */
-     private void updateTempoLine(double stopTime) {
-         this.tempoAnimation.stop();
-         this.tempoLine.setTranslateX(0);
-         this.tempoAnimation.setDuration(new Duration(stopTime*10));
-         this.tempoAnimation.setToX(stopTime);
-         this.tempoLine.setVisible(true);
-         this.tempoAnimation.play();
-     }
-
-    /**
-     * Generates a rectangle which represents a note on the composition Pane
-     * The rectangle will be colored blue, adjusted to fit within the
-     * clicked lines, and be added to the composition pane.
-     *
-     * @param xPos the input x position of the note
-     * @param yPos the input y position of the note
-     *        (will be adjusted to look nice)
-     */
-    private void addNoteToComposition(double xPos, double yPos) {
-        if (yPos > 0 && yPos < 1270) {
-            Rectangle note = new Rectangle(100.0, 10.0);
-            note.getStyleClass().add("note");
-            note.setX(xPos); note.setY(yPos - (yPos % 10));
-            this.compositionSheet.getChildren().add(note);
-        }
-    }
-
     @FXML
     /**
      * Adds a note to the composition panel
@@ -141,7 +83,9 @@ public class Main extends Application {
      * to this functionality (e.g. left click event)
      */
     protected void handleAddNote(MouseEvent mouseEvent) {
-        addNoteToComposition(mouseEvent.getX(), mouseEvent.getY());
+        this.compositionSheet.addNoteToComposition(
+            mouseEvent.getX(), mouseEvent.getY()
+        );
     }
 
     /**
@@ -149,7 +93,7 @@ public class Main extends Application {
      * very close in time with each other (milliseconds)
      */
     protected void playMusicAndAnimation() {
-        this.tempoAnimation.play();
+        this.tempoLine.playAnimation();
         this.midiPlayer.play();
     }
 
@@ -172,8 +116,8 @@ public class Main extends Application {
      */
     protected void handleStopMusic(ActionEvent event) {
         this.midiPlayer.stop();
-        this.tempoAnimation.stop();
-        hideTempoLine();
+        this.tempoLine.stopAnimation();
+        this.tempoLine.hideTempoLine();
     }
 
     @FXML
@@ -189,10 +133,8 @@ public class Main extends Application {
     protected void handlePlayMidi(ActionEvent event) {
         this.midiPlayer.stop();
         this.midiPlayer.clear();
-        double stopTime = CompositionSheet.buildSong(
-            this.compositionSheet, this.midiPlayer
-        );
-        updateTempoLine(stopTime);
+        double stopTime = compositionSheet.buildSong(this.midiPlayer);
+        this.tempoLine.updateTempoLine(stopTime);
         playMusicAndAnimation();
     }
 

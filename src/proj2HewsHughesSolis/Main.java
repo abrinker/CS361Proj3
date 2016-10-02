@@ -106,7 +106,7 @@ public class Main extends Application {
                      0,                          //channel
                      0                           //trackIndex
                  );
-                 System.out.println(tempNote.getX());
+                 System.out.println("Note X: " + tempNote.getX() + "Width: " + tempNote.getWidth());
                  if (stopTime < tempNote.getX()+tempNote.getWidth()) {
                      stopTime = tempNote.getX()+tempNote.getWidth();
                  }
@@ -124,17 +124,25 @@ public class Main extends Application {
          this.compositionSheet.getChildren().add(this.tempoLine);
      }
 
+     private void removeTempoLine() {
+         if (this.compositionSheet.getChildren().contains(this.tempoLine)) {
+             this.compositionSheet.getChildren().remove(this.tempoLine);
+         }
+     }
+
     /**
      * Draws a red line and moves it across the screen based on the
      * current composition
      */
      private void moveTempoLine(double stopTime) {
-         this.tempoLine.relocate(0,0);
+         removeTempoLine();
+         buildTempoLine();
          TranslateTransition tt = new TranslateTransition(
              new Duration(stopTime*10), this.tempoLine
          );
+         tt.setFromX(0.0);
          tt.setToX(stopTime);
-         System.out.println("" + stopTime + " " + stopTime*10);
+         tt.setByX(1.0);
          tt.play();
      }
 
@@ -184,6 +192,7 @@ this.     * For use in our stop button
      */
     protected void handleStopMidi(ActionEvent event) {
         this.midiPlayer.stop();
+        removeTempoLine();
     }
 
     @FXML
@@ -202,6 +211,7 @@ this.     * For use in our stop button
         double stopTime = buildSong();
         moveTempoLine(stopTime);
         this.midiPlayer.play();
+        //removeTempoLine();
     }
 
     /**

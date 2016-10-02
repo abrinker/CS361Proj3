@@ -23,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import javafx.animation.TranslateTransition;
 import javafx.animation.Interpolator;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -140,6 +141,12 @@ public class Main extends Application {
          );
          tt.setToX(stopTime);
          tt.setInterpolator(Interpolator.LINEAR);
+         tt.setOnFinished(new EventHandler<ActionEvent>() {
+             @Override
+             public void handle(ActionEvent event) {
+                 hideTempoLine();
+             }
+         });
          tt.play();
      }
 

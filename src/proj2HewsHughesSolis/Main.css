@@ -14,8 +14,12 @@
 }
 
 .note {
-  -fx-border-color: red;
+  -fx-border-color: black;
   -fx-border-width: 5;
   -fx-border-style: solid;
   -fx-opacity: 0.8;
+}
+
+.tempo-line {
+  -fx-stroke: red;
 }

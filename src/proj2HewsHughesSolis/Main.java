@@ -20,6 +20,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
+import javafx.animation.TranslateTransition;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -33,12 +35,14 @@ public class Main extends Application {
 
     @FXML
     private Pane compositionSheet;
+    private Line tempoLine;
 
     /**
      * Sets up the FXML elements that are dynamically built
      */
     public void initialize() {
         createCompositionSheet();
+        buildTempoLine();
     }
 
     /**
@@ -84,9 +88,12 @@ public class Main extends Application {
      * Creates a composition using all of the rectangles in our
      * compositionSheet, based on their X and Y positions
      * (timing and pitch respectively)
+     *
+     * returns the time that the song ends at
      */
-     private void buildSong() {
+     private double buildSong() {
          Rectangle tempNote;
+         double stopTime = 0.0;
          for (Node note : this.compositionSheet.getChildren()) {
              if (note instanceof Rectangle) {
                  tempNote = (Rectangle) note;
@@ -99,8 +106,36 @@ public class Main extends Application {
                      0,                          //channel
                      0                           //trackIndex
                  );
+                 System.out.println(tempNote.getX());
+                 if (stopTime < tempNote.getX()+tempNote.getWidth()) {
+                     stopTime = tempNote.getX()+tempNote.getWidth();
+                 }
              }
          }
+         return stopTime;
+     }
+
+    /**
+     *
+     */
+     private void buildTempoLine() {
+         this.tempoLine = new Line(0,0,0,1280);
+         this.tempoLine.getStyleClass().add("tempo-line");
+         this.compositionSheet.getChildren().add(this.tempoLine);
+     }
+
+    /**
+     * Draws a red line and moves it across the screen based on the
+     * current composition
+     */
+     private void moveTempoLine(double stopTime) {
+         this.tempoLine.relocate(0,0);
+         TranslateTransition tt = new TranslateTransition(
+             new Duration(stopTime*10), this.tempoLine
+         );
+         tt.setToX(stopTime);
+         System.out.println("" + stopTime + " " + stopTime*10);
+         tt.play();
      }
 
     /**
@@ -164,7 +199,8 @@ this.     * For use in our stop button
     protected void handlePlayMidi(ActionEvent event) {
         this.midiPlayer.stop();
         this.midiPlayer.clear();
-        buildSong();
+        double stopTime = buildSong();
+        moveTempoLine(stopTime);
         this.midiPlayer.play();
     }
 

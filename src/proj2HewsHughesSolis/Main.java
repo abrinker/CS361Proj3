@@ -45,7 +45,7 @@ public class Main extends Application {
      * Sets up the FXML elements that are dynamically built
      */
     public void initialize() {
-        createCompositionSheet();
+        CompositionSheet.createCompositionSheet(this.compositionSheet);
         setupTempoAnimation();
     }
 
@@ -72,51 +72,6 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest(event -> System.exit(0));
         primaryStage.show();
     }
-
-    /**
-     * Generates the Composition nodes by creating a scrollPane
-     * which holds a regular pane object (serves as the canvas)
-     * to which we add a bunch of rectangles which serve as the lines
-     */
-    private void createCompositionSheet() {
-        Line staffLine;
-        for(int i=0; i<127; i++) {
-            staffLine = new Line(0,i*10,2000,i*10);
-            this.compositionSheet.getChildren().add(staffLine);
-        }
-    }
-
-    /**
-     * Creates a composition using all of the rectangles in our
-     * compositionSheet, based on their X and Y positions
-     * (timing and pitch respectively)
-     *
-     * Also Keeps track of the last note and when it ends
-     * and returns it for use in the animation
-     */
-     private double buildSong() {
-         Rectangle tempNote;
-         double stopTime = 0.0;
-         for (Node note : this.compositionSheet.getChildren()) {
-             if (note instanceof Rectangle) {
-                 tempNote = (Rectangle) note;
-                 this.midiPlayer.addNote(
-                     //pitch
-                     (int) (127.0 -(tempNote.getY() - (tempNote.getY()%10))/10),
-                     100,                        //volume
-                     (int) tempNote.getX(),      //startTick
-                     (int) tempNote.getWidth(),  //duration
-                     0,                          //channel
-                     0                           //trackIndex
-                 );
-                 //Update Stoptime if the note is the last one so far
-                 if (stopTime < tempNote.getX()+tempNote.getWidth()) {
-                     stopTime = tempNote.getX()+tempNote.getWidth();
-                 }
-             }
-         }
-         return stopTime;
-     }
 
      /**
       * if there is a tempoline in the compositionsheet, remove it.
@@ -234,7 +189,9 @@ public class Main extends Application {
     protected void handlePlayMidi(ActionEvent event) {
         this.midiPlayer.stop();
         this.midiPlayer.clear();
-        double stopTime = buildSong();
+        double stopTime = CompositionSheet.buildSong(
+            this.compositionSheet, this.midiPlayer
+        );
         updateTempoLine(stopTime);
         playMusicAndAnimation();
     }

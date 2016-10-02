@@ -7,10 +7,9 @@
  */
 
 .note {
-  -fx-border-color: black;
-  -fx-border-width: 1;
-  -fx-border-style: solid;
-  -fx-opacity: 0.8;
+  -fx-stroke: black;
+  -fx-fill: blue;
+  -fx-opacity: 0.7;
 }
 
 .tempo-line {

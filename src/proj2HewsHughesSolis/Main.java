@@ -40,12 +40,14 @@ public class Main extends Application {
 
     @FXML
     private Line tempoLine;
+    private TranslateTransition tempoAnimation = new TranslateTransition();
 
     /**
      * Sets up the FXML elements that are dynamically built
      */
     public void initialize() {
         createCompositionSheet();
+        setupTempoAnimation();
     }
 
     /**
@@ -118,6 +120,24 @@ public class Main extends Application {
      }
 
      /**
+      * Initializes the tempoAnimation object with the default
+      * values it needs
+      * Provides the animation with the tempoLine which it moves
+      * makes sure the animation is linear
+      * and sets our onFinished event
+      */
+     private void setupTempoAnimation() {
+         this.tempoAnimation.setNode(this.tempoLine);
+         this.tempoAnimation.setInterpolator(Interpolator.LINEAR);
+         this.tempoAnimation.setOnFinished(new EventHandler<ActionEvent>() {
+             @Override
+             public void handle(ActionEvent event) {
+                 hideTempoLine();
+             }
+         });
+     }
+
+     /**
       * if there is a tempoline in the compositionsheet, remove it.
       */
      private void hideTempoLine() {
@@ -133,21 +153,12 @@ public class Main extends Application {
      * location of the right edge of the final note to be played
      */
      private void moveTempoLine(double stopTime) {
-         hideTempoLine();
+         this.tempoAnimation.stop();
          this.tempoLine.setTranslateX(0);
+         this.tempoAnimation.setDuration(new Duration(stopTime*10));
+         this.tempoAnimation.setToX(stopTime);
          this.tempoLine.setVisible(true);
-         TranslateTransition tt = new TranslateTransition(
-             new Duration(stopTime*10), this.tempoLine
-         );
-         tt.setToX(stopTime);
-         tt.setInterpolator(Interpolator.LINEAR);
-         tt.setOnFinished(new EventHandler<ActionEvent>() {
-             @Override
-             public void handle(ActionEvent event) {
-                 hideTempoLine();
-             }
-         });
-         tt.play();
+         this.tempoAnimation.play();
      }
 
     /**
@@ -161,7 +172,7 @@ public class Main extends Application {
      */
     private void addNoteToComposition(double xPos, double yPos) {
         if (yPos > 0 && yPos < 1270) {
-            Rectangle note = new Rectangle(100.0, 10.0, Color.BLUE);
+            Rectangle note = new Rectangle(100.0, 10.0);
             note.getStyleClass().add("note");
             note.setX(xPos); note.setY(yPos - (yPos % 10));
             this.compositionSheet.getChildren().add(note);
